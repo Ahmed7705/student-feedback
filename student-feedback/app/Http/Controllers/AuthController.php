@@ -47,6 +47,14 @@ class AuthController extends Controller
             'name'     => 'required|min:3|max:100',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+        ], [
+            'name.required'     => 'Full name must be at least 3 characters.',
+            'name.min'          => 'Full name must be at least 3 characters.',
+            'email.required'    => 'Please enter a valid email address.',
+            'email.email'       => 'Please enter a valid email address.',
+            'email.unique'      => 'Email is already registered.',
+            'password.required' => 'Password must be at least 6 characters.',
+            'password.min'      => 'Password must be at least 6 characters.',
         ]);
 
         // Create new user

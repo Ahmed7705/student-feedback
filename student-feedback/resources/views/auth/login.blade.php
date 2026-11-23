@@ -9,9 +9,7 @@
             <h5 class="fw-bold mb-3" style="color: var(--app-blue);">Student Login</h5>
 
             @if ($errors->any())
-                <div class="alert alert-danger py-2 small">
-                    {{ $errors->first() }}
-                </div>
+                <div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>
             @endif
 
             <form action="{{ route('login.post') }}" method="POST">

@@ -58,6 +58,17 @@ class FeedbackController extends Controller
             'title'        => 'required|min:3|max:150',
             'comments'     => 'required|min:5',
             'image'        => 'nullable|image|max:2048',
+        ], [
+            'course_id.required'    => 'Please select a course.',
+            'student_name.required' => 'Student name is required.',
+            'student_name.min'      => 'Student name is required.',
+            'student_id.required'   => 'Student ID is required.',
+            'student_id.min'        => 'Student ID is required.',
+            'title.required'        => 'Title is required.',
+            'title.min'             => 'Title is required.',
+            'comments.required'     => 'Comments are required.',
+            'comments.min'          => 'Comments are required.',
+            'image.image'           => 'Invalid image file.',
         ]);
 
         // Upload image
@@ -97,6 +108,15 @@ class FeedbackController extends Controller
             'title'        => 'required|min:3|max:150',
             'comments'     => 'required|min:5',
             'image'        => 'nullable|image|max:2048',
+        ], [
+            'course_id.required'    => 'Please select a course.',
+            'student_name.required' => 'Student name is required.',
+            'student_name.min'      => 'Student name is required.',
+            'title.required'        => 'Title is required.',
+            'title.min'             => 'Title is required.',
+            'comments.required'     => 'Comments are required.',
+            'comments.min'          => 'Comments are required.',
+            'image.image'           => 'Invalid image file.',
         ]);
 
         if ($request->hasFile('image')) {
