@@ -28,7 +28,7 @@ class FeedbackController extends Controller
             });
         }
 
-        $feedbacks = $query->latest()->get();
+        $feedbacks = $query->orderBy('id', 'desc')->get();
         return view('feedbacks.index', compact('feedbacks', 'courses'));
     }
 

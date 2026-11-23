@@ -1,5 +1,6 @@
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer mt-auto">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
             <div>

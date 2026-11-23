@@ -117,9 +117,7 @@
     <!-- Navbar -->
     <header class="navbar navbar-expand-lg navbar-dark site-header sticky-top">
         <div class="container">
-            <a class="brand-title" href="{{ route('home') }}">
-                Student Feedback
-            </a>
+            <a class="brand-title" href="{{ route('home') }}">Student Feedback</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -135,13 +133,8 @@
                         <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Team</a>
                     </li>
                     @auth
-                        <li class="nav-item ms-lg-2">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="nav-link btn btn-link border-0" style="text-decoration: none;">
-                                    Logout ({{ Auth::user()->name }})
-                                </button>
-                            </form>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('logout') }}">Logout ({{ Auth::user()->name }})</a>
                         </li>
                     @else
                         <li class="nav-item">

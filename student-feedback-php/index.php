@@ -3,7 +3,7 @@ $page_title = 'Course Reviews';
 require_once __DIR__ . '/header.php';
 
 // Fetch courses
-$courses = $pdo->query("SELECT * FROM courses ORDER BY course_code")->fetchAll();
+$courses = $pdo->query("SELECT * FROM courses ORDER BY id")->fetchAll();
 
 // Search filter
 $search = trim($_GET['search'] ?? '');

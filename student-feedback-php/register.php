@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtIns->execute([$name, $email, $hash]);
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['user_name'] = $name;
-            $_SESSION['flash_success'] = 'Account created successfully.';
+            $_SESSION['flash_success'] = 'Account created.';
             header('Location: index.php');
             exit;
         }

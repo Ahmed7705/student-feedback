@@ -23,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Save session
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
-        $_SESSION['flash_success'] = 'Logged in successfully.';
+        $_SESSION['flash_success'] = 'Welcome back.';
         header('Location: index.php');
         exit;
     } else {
-        $error = 'Invalid email or password.';
+        $error = 'Wrong email or password.';
     }
 }
 

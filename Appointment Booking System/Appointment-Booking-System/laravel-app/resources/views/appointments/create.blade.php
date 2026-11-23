@@ -23,12 +23,12 @@
 
         <div class="form-group">
             <label for="customer_name">Name</label>
-            <input type="text" id="customer_name" name="customer_name" value="{{ old('customer_name') }}" required>
+            <input type="text" id="customer_name" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+            <input type="email" id="email" name="email" value="{{ old('email', auth()->user()->email ?? '') }}" required>
         </div>
 
         <div class="form-group">

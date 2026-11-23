@@ -13,7 +13,7 @@ if (!$feedback) {
     exit;
 }
 
-$courses = $pdo->query("SELECT * FROM courses ORDER BY course_code")->fetchAll();
+$courses = $pdo->query("SELECT * FROM courses ORDER BY id")->fetchAll();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
