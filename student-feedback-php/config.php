@@ -26,14 +26,14 @@ function require_login() {
 }
 
 // Database connection
-$use_mysql = false;
-$db_host = 'localhost';
-$db_name = 'student_feedback';
-$db_user = 'root';
-$db_pass = '';
+$is_online = (strpos($_SERVER['HTTP_HOST'] ?? '', 'infinityfree') !== false);
+$db_host = 'sql207.infinityfree.com';
+$db_name = 'if0_43505732_studentsfeedback';
+$db_user = 'if0_43505732';
+$db_pass = 'sssadmin1';
 
 try {
-    if ($use_mysql) {
+    if ($is_online) {
         $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass);
     } else {
         $pdo = new PDO("sqlite:" . __DIR__ . "/database.sqlite");
@@ -45,33 +45,63 @@ try {
 }
 
 // Create tables
-$pdo->exec("
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR(100) NOT NULL,
-        email VARCHAR(150) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS courses (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        course_code VARCHAR(20) UNIQUE NOT NULL,
-        course_name VARCHAR(150) NOT NULL,
-        instructor_name VARCHAR(100) NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS feedbacks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        course_id INTEGER NOT NULL,
-        student_name VARCHAR(100) NOT NULL,
-        student_id VARCHAR(30) NOT NULL,
-        rating INTEGER NOT NULL,
-        category VARCHAR(50) NOT NULL,
-        title VARCHAR(150) NOT NULL,
-        comments TEXT NOT NULL,
-        image_path VARCHAR(255) DEFAULT NULL,
-        is_anonymous INTEGER DEFAULT 0,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-");
+if ($is_online) {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(150) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS courses (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            course_code VARCHAR(20) UNIQUE NOT NULL,
+            course_name VARCHAR(150) NOT NULL,
+            instructor_name VARCHAR(100) NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS feedbacks (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            course_id INT NOT NULL,
+            student_name VARCHAR(100) NOT NULL,
+            student_id VARCHAR(30) NOT NULL,
+            rating INT NOT NULL,
+            category VARCHAR(50) NOT NULL,
+            title VARCHAR(150) NOT NULL,
+            comments TEXT NOT NULL,
+            image_path VARCHAR(255) DEFAULT NULL,
+            is_anonymous TINYINT(1) DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    ");
+} else {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(150) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS courses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_code VARCHAR(20) UNIQUE NOT NULL,
+            course_name VARCHAR(150) NOT NULL,
+            instructor_name VARCHAR(100) NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS feedbacks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_id INTEGER NOT NULL,
+            student_name VARCHAR(100) NOT NULL,
+            student_id VARCHAR(30) NOT NULL,
+            rating INTEGER NOT NULL,
+            category VARCHAR(50) NOT NULL,
+            title VARCHAR(150) NOT NULL,
+            comments TEXT NOT NULL,
+            image_path VARCHAR(255) DEFAULT NULL,
+            is_anonymous INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+    ");
+}
 
 if ($pdo->query("SELECT COUNT(*) FROM courses")->fetchColumn() == 0) {
     $hash = password_hash('123456', PASSWORD_DEFAULT);
