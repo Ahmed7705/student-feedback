@@ -30,7 +30,7 @@ class AuthController extends Controller
             return redirect()->route('home')->with('success', 'Welcome back.');
         }
 
-        return back()->withErrors(['email' => 'Wrong email or password.'])->onlyInput('email');
+        return redirect()->route('login')->withErrors(['email' => 'Wrong email or password.'])->onlyInput('email');
     }
 
     public function showRegister()
