@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS books (
 );
 
 INSERT INTO books (title, author, category, price, quantity) VALUES
-('PHP & MySQL Web Development', 'Luke Welling', 'Programming', 45.00, 12),
-('Database System Concepts', 'Abraham Silberschatz', 'Database', 60.00, 8),
-('Clean Code Handbook', 'Robert Martin', 'Software Engineering', 50.00, 15),
-('Computer Networking', 'James Kurose', 'Networks', 55.00, 10);
+('Modern PHP Programming', 'Josh Lockhart', 'Programming', 48.00, 14),
+('SQL & Relational Databases', 'Chris Date', 'Database', 62.00, 9),
+('Web Application Architecture', 'Leon Shklar', 'Software Engineering', 54.00, 11),
+('Network Security Essentials', 'William Stallings', 'Networks', 58.00, 7);

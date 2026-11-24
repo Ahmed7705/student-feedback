@@ -8,45 +8,42 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    private array $categories = ['Programming', 'Database', 'Software Engineering', 'Networks'];
+    private array $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks'];
 
     public function index(Request $request)
     {
-        $query = Book::query();
+        $q = Book::query();
 
-        // Filter books
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $q->where('category', $request->category);
         }
 
-        // Search title or author
         if ($request->filled('search')) {
-            $s = $request->search;
-            $query->where(function ($q) use ($s) {
-                $q->where('title', 'like', "%$s%")
-                  ->orWhere('author', 'like', "%$s%");
+            $txt = $request->search;
+            $q->where(function ($sub) use ($txt) {
+                $sub->where('title', 'like', "%$txt%")
+                    ->orWhere('author', 'like', "%$txt%");
             });
         }
 
-        $books = $query->orderBy('id', 'desc')->get();
-        $categories = $this->categories;
-        return view('books.index', compact('books', 'categories'));
+        $list = $q->orderBy('id', 'desc')->get();
+        $cat_list = $this->cat_list;
+        return view('books.index', compact('list', 'cat_list'));
     }
 
     public function manage()
     {
-        $books = Book::orderBy('id', 'desc')->get();
-        return view('books.manage', compact('books'));
+        $list = Book::orderBy('id', 'desc')->get();
+        return view('books.manage', compact('list'));
     }
 
     public function create()
     {
-        // Check login
         if (!Auth::check()) {
-            return redirect()->route('login')->withErrors(['email' => 'Please login first.']);
+            return redirect()->route('login')->withErrors(['email' => 'Please sign in first.']);
         }
-        $categories = $this->categories;
-        return view('books.create', compact('categories'));
+        $cat_list = $this->cat_list;
+        return view('books.create', compact('cat_list'));
     }
 
     public function store(Request $request)
@@ -55,8 +52,7 @@ class BookController extends Controller
             return redirect()->route('login');
         }
 
-        // Validate input
-        $data = $request->validate([
+        $payload = $request->validate([
             'title'    => 'required|min:2|max:150',
             'author'   => 'required|min:2|max:100',
             'category' => 'required',
@@ -64,39 +60,39 @@ class BookController extends Controller
             'quantity' => 'required|integer|min:0',
             'image'    => 'nullable|image|max:2048',
         ], [
-            'title.required'    => 'Book title is required.',
-            'title.min'         => 'Book title is required.',
-            'author.required'   => 'Author is required.',
-            'author.min'        => 'Author is required.',
-            'category.required' => 'Category is required.',
-            'price.required'    => 'Price must be a valid positive number.',
-            'price.numeric'     => 'Price must be a valid positive number.',
-            'price.gt'          => 'Price must be a valid positive number.',
-            'quantity.required' => 'Quantity must be 0 or more.',
-            'quantity.integer'  => 'Quantity must be 0 or more.',
-            'quantity.min'      => 'Quantity must be 0 or more.',
-            'image.image'       => 'Invalid image file.',
+            'title.required'    => 'Enter book title.',
+            'title.min'         => 'Enter book title.',
+            'author.required'   => 'Enter author name.',
+            'author.min'        => 'Enter author name.',
+            'category.required' => 'Choose a category.',
+            'price.required'    => 'Enter a valid price greater than zero.',
+            'price.numeric'     => 'Enter a valid price greater than zero.',
+            'price.gt'          => 'Enter a valid price greater than zero.',
+            'quantity.required' => 'Enter a valid quantity.',
+            'quantity.integer'  => 'Enter a valid quantity.',
+            'quantity.min'      => 'Enter a valid quantity.',
+            'image.image'       => 'Unsupported image format.',
         ]);
 
-        // Upload image
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $name);
-            $data['image_path'] = 'uploads/' . $name;
+            $f = $request->file('image');
+            $saved_name = time() . '_' . $f->getClientOriginalName();
+            $f->move(public_path('uploads'), $saved_name);
+            $payload['image_path'] = 'uploads/' . $saved_name;
         }
 
-        Book::create($data);
-        return redirect()->route('books.manage')->with('success', 'Book added.');
+        Book::create($payload);
+        return redirect()->route('books.manage')->with('success', 'Book saved to catalog.');
     }
 
     public function edit(Book $book)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->withErrors(['email' => 'Please login first.']);
+            return redirect()->route('login')->withErrors(['email' => 'Please sign in first.']);
         }
-        $categories = $this->categories;
-        return view('books.edit', compact('book', 'categories'));
+        $record = $book;
+        $cat_list = $this->cat_list;
+        return view('books.edit', compact('record', 'cat_list'));
     }
 
     public function update(Request $request, Book $book)
@@ -105,7 +101,7 @@ class BookController extends Controller
             return redirect()->route('login');
         }
 
-        $data = $request->validate([
+        $payload = $request->validate([
             'title'    => 'required|min:2|max:150',
             'author'   => 'required|min:2|max:100',
             'category' => 'required',
@@ -113,38 +109,37 @@ class BookController extends Controller
             'quantity' => 'required|integer|min:0',
             'image'    => 'nullable|image|max:2048',
         ], [
-            'title.required'    => 'Book title is required.',
-            'title.min'         => 'Book title is required.',
-            'author.required'   => 'Author is required.',
-            'author.min'        => 'Author is required.',
-            'category.required' => 'Category is required.',
-            'price.required'    => 'Price must be a valid positive number.',
-            'price.numeric'     => 'Price must be a valid positive number.',
-            'price.gt'          => 'Price must be a valid positive number.',
-            'quantity.required' => 'Quantity must be 0 or more.',
-            'quantity.integer'  => 'Quantity must be 0 or more.',
-            'quantity.min'      => 'Quantity must be 0 or more.',
-            'image.image'       => 'Invalid image file.',
+            'title.required'    => 'Enter book title.',
+            'title.min'         => 'Enter book title.',
+            'author.required'   => 'Enter author name.',
+            'author.min'        => 'Enter author name.',
+            'category.required' => 'Choose a category.',
+            'price.required'    => 'Enter a valid price greater than zero.',
+            'price.numeric'     => 'Enter a valid price greater than zero.',
+            'price.gt'          => 'Enter a valid price greater than zero.',
+            'quantity.required' => 'Enter a valid quantity.',
+            'quantity.integer'  => 'Enter a valid quantity.',
+            'quantity.min'      => 'Enter a valid quantity.',
+            'image.image'       => 'Unsupported image format.',
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $name);
-            $data['image_path'] = 'uploads/' . $name;
+            $f = $request->file('image');
+            $saved_name = time() . '_' . $f->getClientOriginalName();
+            $f->move(public_path('uploads'), $saved_name);
+            $payload['image_path'] = 'uploads/' . $saved_name;
         }
 
-        $book->update($data);
-        return redirect()->route('books.manage')->with('success', 'Book updated.');
+        $book->update($payload);
+        return redirect()->route('books.manage')->with('success', 'Book details updated.');
     }
 
     public function destroy(Book $book)
     {
-        // Delete record
         if (!Auth::check()) {
             return redirect()->route('login');
         }
         $book->delete();
-        return redirect()->route('books.manage')->with('success', 'Book deleted.');
+        return redirect()->route('books.manage')->with('success', 'Book removed.');
     }
 }

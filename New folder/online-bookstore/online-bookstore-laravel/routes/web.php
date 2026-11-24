@@ -4,12 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 
-// Main routes
 Route::get('/', [BookController::class, 'index'])->name('home');
 Route::get('/manage', [BookController::class, 'manage'])->name('books.manage');
 Route::resource('books', BookController::class);
 
-// Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');

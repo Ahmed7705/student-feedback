@@ -1,94 +1,90 @@
 <?php
-$page_title = 'Catalog';
+$view_title = 'Catalog';
 require_once __DIR__ . '/header.php';
 
-// Filter books
-$search = trim($_GET['search'] ?? '');
-$category = trim($_GET['category'] ?? '');
+$q_text = trim($_GET['search'] ?? '');
+$q_cat = trim($_GET['category'] ?? '');
 
-$sql = "SELECT * FROM books WHERE 1=1";
-$params = [];
+$query = "SELECT * FROM books WHERE 1=1";
+$args = [];
 
-if ($category !== '') {
-    $sql .= " AND category = ?";
-    $params[] = $category;
+if ($q_cat !== '') {
+    $query .= " AND category = ?";
+    $args[] = $q_cat;
 }
-if ($search !== '') {
-    $sql .= " AND (title LIKE ? OR author LIKE ?)";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
+if ($q_text !== '') {
+    $query .= " AND (title LIKE ? OR author LIKE ?)";
+    $args[] = "%$q_text%";
+    $args[] = "%$q_text%";
 }
-$sql .= " ORDER BY id DESC";
+$query .= " ORDER BY id DESC";
 
-// Execute query
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$books = $stmt->fetchAll();
+$st = $db->prepare($query);
+$st->execute($args);
+$list = $st->fetchAll();
 
-$categories = ['Programming', 'Database', 'Software Engineering', 'Networks'];
+$cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks'];
 ?>
 
-<div class="card p-3 mb-3">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+<div class="panel-box p-3 mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-2 mb-3 border-bottom gap-2">
         <div>
-            <h5 class="fw-bold mb-0" style="color: var(--app-blue);">Book Catalog</h5>
-            <span class="text-muted small">Browse books and select items to calculate total price.</span>
+            <h5 class="fw-bold mb-0" style="color: var(--theme-teal);">Available Books</h5>
+            <span class="text-muted small">Check books below to compute the total cost.</span>
         </div>
         <div class="small fw-bold">
-            Selected Total: <span id="selectedTotal" class="price-text">0.00 SAR</span>
+            Total Price: <span id="totalBox" class="cost-label">0.00 SAR</span>
         </div>
     </div>
-</div>
 
-<div class="card p-3 mb-4">
     <form method="GET" action="index.php" class="row g-2 align-items-center">
         <div class="col-md-5">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search title or author..." value="<?= e($search) ?>">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Find by title or author..." value="<?= clean($q_text) ?>">
         </div>
         <div class="col-md-5">
             <select name="category" class="form-select form-select-sm">
                 <option value="">All Categories</option>
-                <?php foreach ($categories as $cat): ?>
-                    <option value="<?= e($cat) ?>" <?= $category === $cat ? 'selected' : '' ?>><?= e($cat) ?></option>
+                <?php foreach ($cat_list as $c): ?>
+                    <option value="<?= clean($c) ?>" <?= $q_cat === $c ? 'selected' : '' ?>><?= clean($c) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-blue btn-sm flex-grow-1">Filter</button>
-            <a href="index.php" class="btn btn-outline-secondary btn-sm">Reset</a>
+            <button type="submit" class="btn btn-store btn-sm flex-grow-1">Search</button>
+            <a href="index.php" class="btn btn-outline-secondary btn-sm">Clear</a>
         </div>
     </form>
 </div>
 
 <div class="row g-3">
-    <?php if (count($books) > 0): ?>
-        <?php foreach ($books as $b): ?>
-            <div class="col-md-6">
-                <div class="card h-100 d-flex flex-column overflow-hidden">
-                    <img src="<?= get_book_image($b) ?>" alt="<?= e($b['title']) ?>" class="card-img-top border-bottom" style="height: 150px; object-fit: cover;">
+    <?php if (count($list) > 0): ?>
+        <?php foreach ($list as $item): ?>
+            <div class="col-md-4">
+                <div class="book-item h-100 d-flex flex-column overflow-hidden">
+                    <img src="<?= book_photo($item) ?>" alt="<?= clean($item['title']) ?>" class="w-100 border-bottom" style="height: 165px; object-fit: cover;">
 
                     <div class="p-3 d-flex flex-column flex-grow-1">
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small fw-semibold text-secondary"><?= e($b['category']) ?></span>
-                            <span class="price-text"><?= number_format((float)$b['price'], 2) ?> SAR</span>
+                            <span class="small text-muted"><?= clean($item['category']) ?></span>
+                            <span class="cost-label"><?= number_format((float)$item['price'], 2) ?> SAR</span>
                         </div>
 
-                        <h6 class="fw-bold mb-1"><?= e($b['title']) ?></h6>
-                        <div class="text-muted small mb-2">
-                            Author: <strong><?= e($b['author']) ?></strong> &middot; Quantity: <strong><?= e($b['quantity']) ?></strong>
+                        <h6 class="fw-bold mb-1"><?= clean($item['title']) ?></h6>
+                        <div class="text-secondary small mb-3">
+                            By <?= clean($item['author']) ?> &middot; Stock: <?= clean($item['quantity']) ?>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center pt-2 mt-auto border-top small">
                             <div class="form-check mb-0">
-                                <input type="checkbox" class="form-check-input book-check" id="chk_<?= e($b['id']) ?>" data-price="<?= number_format((float)$b['price'], 2, '.', '') ?>" onchange="calcTotal()">
-                                <label class="form-check-label text-secondary" for="chk_<?= e($b['id']) ?>">Select Book</label>
+                                <input type="checkbox" class="form-check-input pick-book" id="b_<?= clean($item['id']) ?>" data-cost="<?= number_format((float)$item['price'], 2, '.', '') ?>" onchange="updatePriceSum()">
+                                <label class="form-check-label text-secondary" for="b_<?= clean($item['id']) ?>">Select</label>
                             </div>
-                            <?php if (!empty($_SESSION['user_id'])): ?>
+                            <?php if (!empty($_SESSION['account_id'])): ?>
                                 <div class="d-flex gap-1">
-                                    <a href="edit.php?id=<?= e($b['id']) ?>" class="btn btn-sm btn-outline-secondary py-0 px-2">Edit</a>
-                                    <form action="delete.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this book?');">
-                                        <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
-                                        <input type="hidden" name="id" value="<?= e($b['id']) ?>">
+                                    <a href="edit.php?id=<?= clean($item['id']) ?>" class="btn btn-sm btn-outline-secondary py-0 px-2">Edit</a>
+                                    <form action="delete.php" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">
+                                        <input type="hidden" name="token" value="<?= clean($_SESSION['token']) ?>">
+                                        <input type="hidden" name="id" value="<?= clean($item['id']) ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2">Delete</button>
                                     </form>
                                 </div>
@@ -99,8 +95,8 @@ $categories = ['Programming', 'Database', 'Software Engineering', 'Networks'];
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <div class="col-12 text-center text-muted py-5 bg-white rounded border">
-            No books found.
+        <div class="col-12 text-center text-muted py-5 panel-box">
+            No matching books found.
         </div>
     <?php endif; ?>
 </div>

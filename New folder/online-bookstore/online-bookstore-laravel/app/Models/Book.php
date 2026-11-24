@@ -20,21 +20,21 @@ class Book extends Model
         'image_path',
     ];
 
-    public function getImageUrlAttribute()
+    public function getPhotoUrlAttribute()
     {
         if (!empty($this->image_path)) {
             return asset($this->image_path);
         }
-        $cat = strtolower($this->category ?? '');
-        if (str_contains($cat, 'database')) {
-            return asset('images/book-db.jpg');
+        $c = strtolower($this->category ?? '');
+        if (str_contains($c, 'database')) {
+            return asset('images/cover-db.jpg');
         }
-        if (str_contains($cat, 'software')) {
-            return asset('images/book-oop.jpg');
+        if (str_contains($c, 'software')) {
+            return asset('images/cover-se.jpg');
         }
-        if (str_contains($cat, 'network')) {
-            return asset('images/book-net.jpg');
+        if (str_contains($c, 'network')) {
+            return asset('images/cover-net.jpg');
         }
-        return asset('images/book-web.jpg');
+        return asset('images/cover-prog.jpg');
     }
 }

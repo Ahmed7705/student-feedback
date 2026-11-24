@@ -1,83 +1,84 @@
 <?php
 require_once __DIR__ . '/config.php';
-$current_page = basename($_SERVER['PHP_SELF']);
+$active_file = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= e($page_title ?? 'Catalog') ?> - Online Bookstore</title>
+    <title><?= clean($view_title ?? 'Catalog') ?> | Online Bookstore</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --app-blue: #2b6cb0;
-            --app-blue-hover: #245a94;
-            --app-bg: #f0f5fa;
-            --app-text: #1e293b;
-            --app-muted: #64748b;
-            --app-border: #d5e2ef;
+            --theme-teal: #1f6f5c;
+            --theme-dark: #165244;
+            --theme-bg: #f3f7f5;
+            --theme-ink: #1c2b27;
+            --theme-line: #cfe0da;
         }
         body {
-            background-color: var(--app-bg);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            color: var(--app-text);
+            background-color: var(--theme-bg);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--theme-ink);
         }
-        .site-header {
-            background-color: var(--app-blue);
-            padding: 0.7rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        .top-bar {
+            background-color: var(--theme-teal);
+            padding: 0.65rem 0;
         }
-        .brand-title {
-            font-size: 1.14rem;
+        .store-brand {
+            font-size: 1.18rem;
             font-weight: 700;
             color: #ffffff;
             text-decoration: none;
+            letter-spacing: 0.2px;
         }
-        .brand-title:hover {
-            color: #e6f0fa;
+        .store-brand:hover {
+            color: #dff2ec;
         }
-        .site-header .nav-link {
+        .top-bar .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
             font-size: 0.9rem;
             font-weight: 500;
-            padding: 0.38rem 0.9rem !important;
-            border-radius: 5px;
+            padding: 0.35rem 0.85rem !important;
+            border-bottom: 2px solid transparent;
         }
-        .site-header .nav-link:hover {
+        .top-bar .nav-link:hover {
             color: #ffffff !important;
-            background-color: rgba(255, 255, 255, 0.12);
         }
-        .site-header .nav-link.active {
+        .top-bar .nav-link.active {
             color: #ffffff !important;
-            background-color: rgba(255, 255, 255, 0.22);
+            border-bottom: 2px solid #ffffff;
             font-weight: 600;
         }
-        .btn-blue {
-            background-color: var(--app-blue);
+        .btn-store {
+            background-color: var(--theme-teal);
             color: #ffffff;
-            border: 1px solid var(--app-blue);
+            border: 1px solid var(--theme-teal);
             font-weight: 500;
-            border-radius: 5px;
+            border-radius: 4px;
         }
-        .btn-blue:hover {
-            background-color: var(--app-blue-hover);
-            border-color: var(--app-blue-hover);
+        .btn-store:hover {
+            background-color: var(--theme-dark);
+            border-color: var(--theme-dark);
             color: #ffffff;
         }
-        .card {
-            border: 1px solid var(--app-border);
-            border-radius: 7px;
+        .panel-box {
+            border: 1px solid var(--theme-line);
+            border-radius: 6px;
             background-color: #ffffff;
             box-shadow: none !important;
         }
-        .shadow-sm {
-            box-shadow: none !important;
+        .book-item {
+            border: 1px solid var(--theme-line);
+            border-radius: 6px;
+            background-color: #ffffff;
+            border-top: 3px solid var(--theme-teal);
         }
         .form-control,
         .form-select {
-            border-color: var(--app-border);
-            border-radius: 5px;
+            border-color: var(--theme-line);
+            border-radius: 4px;
         }
         .form-control:focus,
         .form-select:focus,
@@ -86,79 +87,71 @@ $current_page = basename($_SERVER['PHP_SELF']);
         .btn:active {
             box-shadow: none !important;
             outline: none !important;
-            border-color: var(--app-blue) !important;
+            border-color: var(--theme-teal) !important;
         }
         .form-check-input:checked {
-            background-color: var(--app-blue);
-            border-color: var(--app-blue);
+            background-color: var(--theme-teal);
+            border-color: var(--theme-teal);
         }
-        .price-text {
-            color: var(--app-blue);
+        .cost-label {
+            color: var(--theme-teal);
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
         }
         .table th {
-            color: var(--app-blue);
+            color: var(--theme-teal);
             font-weight: 600;
             border-bottom-width: 1px;
         }
-        .site-footer {
-            background-color: var(--app-blue);
-            color: rgba(255, 255, 255, 0.9);
-            padding: 0.75rem 0;
+        .bottom-footer {
+            background-color: var(--theme-teal);
+            color: rgba(255, 255, 255, 0.92);
+            padding: 0.7rem 0;
             font-size: 0.82rem;
-        }
-        .site-footer strong {
-            color: #ffffff;
-            font-weight: 600;
-        }
-        .footer-sep {
-            color: rgba(255, 255, 255, 0.45);
-            margin: 0 0.45rem;
+            text-align: center;
         }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- Navbar -->
-    <header class="navbar navbar-expand-lg navbar-dark site-header sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark top-bar sticky-top">
         <div class="container">
-            <a class="brand-title" href="index.php">Online Bookstore</a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+            <a class="store-brand" href="index.php">Online Bookstore</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuLinks">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navContent">
+            <div class="collapse navbar-collapse" id="menuLinks">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-1 align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link <?= $current_page === 'index.php' ? 'active' : '' ?>" href="index.php">Catalog</a>
+                        <a class="nav-link <?= $active_file === 'index.php' ? 'active' : '' ?>" href="index.php">Book Catalog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $current_page === 'create.php' ? 'active' : '' ?>" href="create.php">Add Book</a>
+                        <a class="nav-link <?= $active_file === 'create.php' ? 'active' : '' ?>" href="create.php">Add Book</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= ($current_page === 'manage.php' || $current_page === 'edit.php') ? 'active' : '' ?>" href="manage.php">Manage Books</a>
+                        <a class="nav-link <?= ($active_file === 'manage.php' || $active_file === 'edit.php') ? 'active' : '' ?>" href="manage.php">Manage Books</a>
                     </li>
-                    <?php if (!empty($_SESSION['user_name'])): ?>
+                    <?php if (!empty($_SESSION['account_name'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">Logout (<?= e($_SESSION['user_name']) ?>)</a>
+                            <a class="nav-link" href="logout.php">Sign Out (<?= clean($_SESSION['account_name']) ?>)</a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link <?= $current_page === 'login.php' ? 'active' : '' ?>" href="login.php">Login</a>
+                            <a class="nav-link <?= $active_file === 'login.php' ? 'active' : '' ?>" href="login.php">Sign In</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= $current_page === 'register.php' ? 'active' : '' ?>" href="register.php">Register</a>
+                            <a class="nav-link <?= $active_file === 'register.php' ? 'active' : '' ?>" href="register.php">Register</a>
                         </li>
                     <?php endif; ?>
                 </ul>
             </div>
         </div>
-    </header>
+    </nav>
 
     <main class="container py-4 flex-grow-1">
-        <?php if (!empty($_SESSION['flash_success'])): ?>
+        <?php if (!empty($_SESSION['msg_ok'])): ?>
             <div class="alert alert-success alert-dismissible fade show py-2 small" role="alert">
-                <?= e($_SESSION['flash_success']) ?>
+                <?= clean($_SESSION['msg_ok']) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-            <?php unset($_SESSION['flash_success']); ?>
+            <?php unset($_SESSION['msg_ok']); ?>
         <?php endif; ?>

@@ -1,58 +1,54 @@
 <?php
-// Start session
 session_start();
 
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(16));
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(16));
 }
 
-function e($str) {
-    return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
+function clean($val) {
+    return htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8');
 }
 
-// CSRF check
-function verify_csrf() {
-    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        die('Invalid CSRF token.');
+function check_csrf() {
+    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+        die('Request token mismatch.');
     }
 }
 
-function require_login() {
-    if (empty($_SESSION['user_id'])) {
-        $_SESSION['flash_error'] = 'Please login first.';
+function must_login() {
+    if (empty($_SESSION['account_id'])) {
+        $_SESSION['msg_error'] = 'Please sign in first.';
         header('Location: login.php');
         exit;
     }
 }
 
-// Database connection
-$is_online = (strpos($_SERVER['HTTP_HOST'] ?? '', 'infinityfree') !== false);
-$db_host = 'sql207.infinityfree.com';
-$db_name = 'if0_43505732_bookstore';
-$db_user = 'if0_43505732';
-$db_pass = getenv('DB_PASS') ?: '';
+$remote = (strpos($_SERVER['HTTP_HOST'] ?? '', 'infinityfree') !== false);
+$host = 'sql207.infinityfree.com';
+$dbname = 'if0_43505732_bookstore';
+$user = 'if0_43505732';
+$pass = getenv('DB_PASS') ?: '';
 
 try {
-    if ($is_online) {
-        $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass);
+    if ($remote) {
+        $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
     } else {
-        $pdo = new PDO("sqlite:" . __DIR__ . "/database.sqlite");
+        $db = new PDO("sqlite:" . __DIR__ . "/database.sqlite");
     }
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $ex) {
-    die("Database error: " . e($ex->getMessage()));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch (PDOException $err) {
+    die("Connection error: " . clean($err->getMessage()));
 }
 
-// Create tables
-if ($is_online) {
-    $pdo->exec("CREATE TABLE IF NOT EXISTS users (
+if ($remote) {
+    $db->exec("CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         email VARCHAR(150) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL
     )");
-    $pdo->exec("CREATE TABLE IF NOT EXISTS books (
+    $db->exec("CREATE TABLE IF NOT EXISTS books (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(150) NOT NULL,
         author VARCHAR(100) NOT NULL,
@@ -62,13 +58,13 @@ if ($is_online) {
         image_path VARCHAR(255) DEFAULT NULL
     )");
 } else {
-    $pdo->exec("CREATE TABLE IF NOT EXISTS users (
+    $db->exec("CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(100) NOT NULL,
         email VARCHAR(150) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL
     )");
-    $pdo->exec("CREATE TABLE IF NOT EXISTS books (
+    $db->exec("CREATE TABLE IF NOT EXISTS books (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title VARCHAR(150) NOT NULL,
         author VARCHAR(100) NOT NULL,
@@ -79,36 +75,36 @@ if ($is_online) {
     )");
 }
 
-if ($pdo->query("SELECT COUNT(*) FROM books")->fetchColumn() == 0) {
-    $hash = password_hash('123456', PASSWORD_DEFAULT);
-    $stmtUser = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    $stmtUser->execute(['Admin User', 'admin@bookstore.com', $hash]);
+if ($db->query("SELECT COUNT(*) FROM books")->fetchColumn() == 0) {
+    $pw = password_hash('123456', PASSWORD_DEFAULT);
+    $insUser = $db->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $insUser->execute(['Store Admin', 'admin@bookstore.com', $pw]);
 
-    $booksData = [
-        ['PHP & MySQL Web Development', 'Luke Welling', 'Programming', 45.00, 12],
-        ['Database System Concepts', 'Abraham Silberschatz', 'Database', 60.00, 8],
-        ['Clean Code Handbook', 'Robert Martin', 'Software Engineering', 50.00, 15],
-        ['Computer Networking', 'James Kurose', 'Networks', 55.00, 10],
+    $initialBooks = [
+        ['Modern PHP Programming', 'Josh Lockhart', 'Programming', 48.00, 14],
+        ['SQL & Relational Databases', 'Chris Date', 'Database', 62.00, 9],
+        ['Web Application Architecture', 'Leon Shklar', 'Software Engineering', 54.00, 11],
+        ['Network Security Essentials', 'William Stallings', 'Networks', 58.00, 7],
     ];
-    $stmtBook = $pdo->prepare("INSERT INTO books (title, author, category, price, quantity) VALUES (?, ?, ?, ?, ?)");
-    foreach ($booksData as $b) {
-        $stmtBook->execute($b);
+    $insBook = $db->prepare("INSERT INTO books (title, author, category, price, quantity) VALUES (?, ?, ?, ?, ?)");
+    foreach ($initialBooks as $row) {
+        $insBook->execute($row);
     }
 }
 
-function get_book_image($b) {
-    if (!empty($b['image_path'])) {
-        return e($b['image_path']);
+function book_photo($item) {
+    if (!empty($item['image_path'])) {
+        return clean($item['image_path']);
     }
-    $cat = strtolower($b['category'] ?? '');
-    if (strpos($cat, 'database') !== false) {
-        return 'images/book-db.jpg';
+    $c = strtolower($item['category'] ?? '');
+    if (strpos($c, 'database') !== false) {
+        return 'images/cover-db.jpg';
     }
-    if (strpos($cat, 'software') !== false) {
-        return 'images/book-oop.jpg';
+    if (strpos($c, 'software') !== false) {
+        return 'images/cover-se.jpg';
     }
-    if (strpos($cat, 'network') !== false) {
-        return 'images/book-net.jpg';
+    if (strpos($c, 'network') !== false) {
+        return 'images/cover-net.jpg';
     }
-    return 'images/book-web.jpg';
+    return 'images/cover-prog.jpg';
 }

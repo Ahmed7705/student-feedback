@@ -12,14 +12,14 @@ class BookSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Admin User',
+            'name' => 'Store Admin',
             'email' => 'admin@bookstore.com',
             'password' => Hash::make('123456'),
         ]);
 
-        Book::create(['title' => 'PHP & MySQL Web Development', 'author' => 'Luke Welling', 'category' => 'Programming', 'price' => 45.00, 'quantity' => 12]);
-        Book::create(['title' => 'Database System Concepts', 'author' => 'Abraham Silberschatz', 'category' => 'Database', 'price' => 60.00, 'quantity' => 8]);
-        Book::create(['title' => 'Clean Code Handbook', 'author' => 'Robert Martin', 'category' => 'Software Engineering', 'price' => 50.00, 'quantity' => 15]);
-        Book::create(['title' => 'Computer Networking', 'author' => 'James Kurose', 'category' => 'Networks', 'price' => 55.00, 'quantity' => 10]);
+        Book::create(['title' => 'Modern PHP Programming', 'author' => 'Josh Lockhart', 'category' => 'Programming', 'price' => 48.00, 'quantity' => 14]);
+        Book::create(['title' => 'SQL & Relational Databases', 'author' => 'Chris Date', 'category' => 'Database', 'price' => 62.00, 'quantity' => 9]);
+        Book::create(['title' => 'Web Application Architecture', 'author' => 'Leon Shklar', 'category' => 'Software Engineering', 'price' => 54.00, 'quantity' => 11]);
+        Book::create(['title' => 'Network Security Essentials', 'author' => 'William Stallings', 'category' => 'Networks', 'price' => 58.00, 'quantity' => 7]);
     }
 }
