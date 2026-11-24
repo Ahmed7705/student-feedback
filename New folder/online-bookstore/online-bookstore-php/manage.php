@@ -46,7 +46,7 @@ $list = $db->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
                                 <span class="fw-semibold"><?= clean($item['quantity']) ?></span> <span class="text-secondary small">in stock</span>
                             </td>
                             <td class="py-3 px-3 text-end">
-                                <?php if (!empty($_SESSION['account_id'])): ?>
+                                <?php if (!empty($_SESSION['account_id']) && is_admin()): ?>
                                     <div class="d-flex justify-content-end gap-1">
                                         <a href="edit.php?id=<?= clean($item['id']) ?>" class="btn btn-sm btn-outline-secondary px-3">Edit</a>
                                         <form action="delete.php" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">

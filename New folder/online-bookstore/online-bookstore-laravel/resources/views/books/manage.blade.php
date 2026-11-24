@@ -43,7 +43,7 @@
                             <span class="fw-semibold">{{ $item->quantity }}</span> <span class="text-secondary small">in stock</span>
                         </td>
                         <td class="py-3 px-3 text-end">
-                            @auth
+                            @if(Auth::check() && Auth::user()->role === 'admin')
                                 <div class="d-flex justify-content-end gap-1">
                                     <a href="{{ route('books.edit', $item) }}" class="btn btn-sm btn-outline-secondary px-3">Edit</a>
                                     <form action="{{ route('books.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">
@@ -54,7 +54,7 @@
                                 </div>
                             @else
                                 <a href="{{ route('login') }}" class="small text-decoration-none fw-semibold" style="color: var(--theme-main);">Sign in to edit</a>
-                            @endauth
+                            @endif
                         </td>
                     </tr>
                 @empty

@@ -23,30 +23,67 @@ function must_login() {
     }
 }
 
-$remote = (strpos($_SERVER['HTTP_HOST'] ?? '', 'infinityfree') !== false);
-$host = 'sql207.infinityfree.com';
-$dbname = 'if0_43505732_bookstore';
-$user = 'if0_43505732';
-$pass = getenv('DB_PASS') ?: '';
-
-try {
-    if ($remote) {
-        $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
-    } else {
-        $db = new PDO("sqlite:" . __DIR__ . "/database.sqlite");
-    }
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $err) {
-    die("Connection error: " . clean($err->getMessage()));
+function is_admin() {
+    return !empty($_SESSION['account_role']) && $_SESSION['account_role'] === 'admin';
 }
 
-if ($remote) {
+function must_admin() {
+    if (empty($_SESSION['account_id'])) {
+        $_SESSION['msg_error'] = 'Please sign in first.';
+        header('Location: login.php');
+        exit;
+    }
+    if (!is_admin()) {
+        $_SESSION['msg_error'] = 'Access restricted to administrators.';
+        header('Location: index.php');
+        exit;
+    }
+}
+
+// Database configuration (MySQL configured for InfinityFree or local XAMPP)
+$db_host = getenv('DB_HOST') ?: 'localhost';
+$db_name = getenv('DB_NAME') ?: 'bookstore_db';
+$db_user = getenv('DB_USER') ?: 'root';
+$db_pass = getenv('DB_PASS') ?: '';
+$db_port = (int)(getenv('DB_PORT') ?: 3306);
+
+$db = null;
+$is_mysql = false;
+
+// Check if MySQL server is reachable
+$sock = @fsockopen($db_host, $db_port, $errno, $errstr, 0.2);
+if ($sock) {
+    fclose($sock);
+    try {
+        $dsn = "mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4";
+        $db = new PDO($dsn, $db_user, $db_pass, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        $is_mysql = true;
+    } catch (PDOException $e) {
+        $db = null;
+    }
+}
+
+// Fallback to SQLite for local development when MySQL daemon is offline
+if (!$db) {
+    $sqlite_file = __DIR__ . '/database.sqlite';
+    $db = new PDO("sqlite:" . $sqlite_file, null, null, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+    $is_mysql = false;
+}
+
+// Create tables if they do not exist
+if ($is_mysql) {
     $db->exec("CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         email VARCHAR(150) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(20) DEFAULT 'customer'
     )");
     $db->exec("CREATE TABLE IF NOT EXISTS books (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,7 +99,8 @@ if ($remote) {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(100) NOT NULL,
         email VARCHAR(150) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(20) DEFAULT 'customer'
     )");
     $db->exec("CREATE TABLE IF NOT EXISTS books (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,11 +113,23 @@ if ($remote) {
     )");
 }
 
-if ($db->query("SELECT COUNT(*) FROM books")->fetchColumn() == 0) {
-    $pw = password_hash('123456', PASSWORD_DEFAULT);
-    $insUser = $db->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    $insUser->execute(['Store Admin', 'admin@bookstore.com', $pw]);
+// Ensure uploads directory exists
+$upload_dir = __DIR__ . '/uploads';
+if (!is_dir($upload_dir)) {
+    @mkdir($upload_dir, 0777, true);
+}
 
+// Seed default administrator if users table is empty
+$user_count = (int)$db->query("SELECT COUNT(*) FROM users")->fetchColumn();
+if ($user_count === 0) {
+    $admin_pw = password_hash('Admin@2026', PASSWORD_DEFAULT);
+    $insUser = $db->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'admin')");
+    $insUser->execute(['Store Admin', 'admin@bookstore.com', $admin_pw]);
+}
+
+// Seed initial books only if both books and users are fresh (prevents bug if admin deletes all books)
+$book_count = (int)$db->query("SELECT COUNT(*) FROM books")->fetchColumn();
+if ($book_count === 0 && $user_count === 0) {
     $initialBooks = [
         ['Modern PHP Programming', 'Josh Lockhart', 'Programming', 48.00, 14],
         ['SQL & Relational Databases', 'Chris Date', 'Database', 62.00, 9],

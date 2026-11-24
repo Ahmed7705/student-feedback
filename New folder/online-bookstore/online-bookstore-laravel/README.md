@@ -1,6 +1,8 @@
-# Online Bookstore (COMP-315 Project 2 - Laravel Version)
+# Online Bookstore (Laravel Version)
 
-## Team Members / فريق العمل:
+Laravel implementation of the Online Bookstore project using MVC architecture (Routes, Controllers, Blade Views, Models, and Migrations).
+
+## Team Members:
 - **Lamar Mamdouh Busayli** (لمار ممدوح بصيلي) - `202502428`
 - **Lama Issa Madkhali** (لمى عيسى مدخلي) - `202500391`
 - **Rahaf Ahmed Jamali** (رهف احمد جمالي) - `202503165`
@@ -8,17 +10,13 @@
 - **Maryam Yahya Madkhali** (مريم يحيى مدخلي) - `202501652`
 
 ## Features:
-- Book Catalog with search, category filter, and JavaScript total price calculation
-- Add Book form with price and quantity validation and optional cover upload
-- Manage Books inventory table with stock indicators, Edit, and Delete actions
-- User session authentication: Registration, Login, and Logout
-- Test credentials: `admin@bookstore.com` / `123456`
+- **Book Catalog**: Responsive card view, category filter, search, and dynamic JavaScript price sum calculation.
+- **Inventory Management**: Manage stock, edit book details, and delete with confirmation.
+- **Form Handling**: Request validation for prices, whole-number quantities, and book cover uploads.
+- **User Authentication**: Secure authentication with role-based access for store administrators.
+- **Administrator Account**: `admin@bookstore.com` / `Admin@2026`
 
-## Database Tables:
-- `users` (id, name, email, password)
-- `books` (id, title, author, category, price, quantity, image_path)
-
-## Run Locally:
+## Running Locally:
 ```bash
 composer install
 php artisan migrate --seed

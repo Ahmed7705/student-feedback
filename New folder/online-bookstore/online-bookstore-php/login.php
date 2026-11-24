@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($acc && password_verify($pass, $acc['password'])) {
         $_SESSION['account_id'] = $acc['id'];
         $_SESSION['account_name'] = $acc['name'];
+        $_SESSION['account_role'] = $acc['role'] ?? 'customer';
         $_SESSION['msg_ok'] = 'Signed in.';
         header('Location: index.php');
         exit;

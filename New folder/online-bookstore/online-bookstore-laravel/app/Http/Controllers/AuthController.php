@@ -60,6 +60,7 @@ class AuthController extends Controller
             'name'     => $payload['name'],
             'email'    => $payload['email'],
             'password' => Hash::make($payload['password']),
+            'role'     => 'customer',
         ]);
 
         Auth::login($acc);

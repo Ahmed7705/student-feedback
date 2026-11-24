@@ -133,7 +133,10 @@
                     </li>
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('logout') }}">Sign Out ({{ Auth::user()->name }})</a>
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="nav-link btn btn-link p-0 border-0">Sign Out ({{ Auth::user()->name }})</button>
+                            </form>
                         </li>
                     @else
                         <li class="nav-item">

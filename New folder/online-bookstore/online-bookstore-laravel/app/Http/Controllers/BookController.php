@@ -31,6 +31,11 @@ class BookController extends Controller
         return view('books.index', compact('list', 'cat_list'));
     }
 
+    public function show(Book $book)
+    {
+        return redirect()->route('home');
+    }
+
     public function manage()
     {
         $list = Book::orderBy('id', 'desc')->get();
@@ -42,6 +47,9 @@ class BookController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->withErrors(['email' => 'Please sign in first.']);
         }
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('home')->withErrors(['error' => 'Access restricted to administrators.']);
+        }
         $cat_list = $this->cat_list;
         return view('books.create', compact('cat_list'));
     }
@@ -50,6 +58,9 @@ class BookController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('login');
+        }
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('home');
         }
 
         $payload = $request->validate([
@@ -90,6 +101,9 @@ class BookController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->withErrors(['email' => 'Please sign in first.']);
         }
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('home')->withErrors(['error' => 'Access restricted to administrators.']);
+        }
         $record = $book;
         $cat_list = $this->cat_list;
         return view('books.edit', compact('record', 'cat_list'));
@@ -99,6 +113,9 @@ class BookController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('login');
+        }
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('home');
         }
 
         $payload = $request->validate([
@@ -136,7 +153,7 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        if (!Auth::check()) {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
         $book->delete();

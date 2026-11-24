@@ -26,6 +26,13 @@ $list = $st->fetchAll();
 $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks', 'Algorithms', 'Cloud Computing'];
 ?>
 
+<div class="panel-box p-4 mb-4 text-center">
+    <h3 class="fw-bold mb-2" style="color: var(--theme-main);">Welcome to Online Bookstore</h3>
+    <p class="text-secondary mx-auto mb-0" style="max-width: 680px;">
+        Explore our curated selection of computer science, software engineering, and technology books. Browse titles, search by category, and easily calculate your total order cost below.
+    </p>
+</div>
+
 <div class="panel-box p-4 mb-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-3 border-bottom gap-3">
         <div>
@@ -80,7 +87,7 @@ $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks', 'Alg
                                 <input type="checkbox" class="form-check-input pick-book" id="b_<?= clean($item['id']) ?>" data-cost="<?= number_format((float)$item['price'], 2, '.', '') ?>" onchange="updatePriceSum()">
                                 <label class="form-check-label text-secondary" for="b_<?= clean($item['id']) ?>">Select</label>
                             </div>
-                            <?php if (!empty($_SESSION['account_id'])): ?>
+                            <?php if (!empty($_SESSION['account_id']) && is_admin()): ?>
                                 <div class="d-flex gap-1">
                                     <a href="edit.php?id=<?= clean($item['id']) ?>" class="btn btn-sm btn-outline-secondary py-0 px-2">Edit</a>
                                     <form action="delete.php" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">

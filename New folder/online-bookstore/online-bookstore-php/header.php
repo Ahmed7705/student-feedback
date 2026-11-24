@@ -137,7 +137,10 @@ $active_file = basename($_SERVER['PHP_SELF']);
                     </li>
                     <?php if (!empty($_SESSION['account_name'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">Sign Out (<?= clean($_SESSION['account_name']) ?>)</a>
+                            <form action="logout.php" method="POST" class="d-inline">
+                                <input type="hidden" name="token" value="<?= clean($_SESSION['token']) ?>">
+                                <button type="submit" class="nav-link btn btn-link p-0 border-0">Sign Out (<?= clean($_SESSION['account_name']) ?>)</button>
+                            </form>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">

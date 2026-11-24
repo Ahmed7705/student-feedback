@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-must_login();
+must_admin();
 
 $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks', 'Algorithms', 'Cloud Computing'];
 $err_list = [];
@@ -19,17 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (strlen($author) < 2) $err_list[] = 'Enter author name.';
     if ($category === '') $err_list[] = 'Choose a category.';
     if (!is_numeric($price) || (float)$price <= 0) $err_list[] = 'Enter a valid price greater than zero.';
-    if (!is_numeric($quantity) || (int)$quantity < 0) $err_list[] = 'Enter a valid quantity.';
+    if (!preg_match('/^\d+$/', $quantity)) $err_list[] = 'Enter a valid quantity.';
 
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
             $err_list[] = 'Unsupported image format.';
+        } elseif ($_FILES['image']['size'] > 2 * 1024 * 1024) {
+            $err_list[] = 'Image size must be 2MB or less.';
         } else {
-            $saved_name = time() . '_' . basename($_FILES['image']['name']);
-            $target = __DIR__ . '/uploads/' . $saved_name;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-                $photo_file = 'uploads/' . $saved_name;
+            $img_info = @getimagesize($_FILES['image']['tmp_name']);
+            if (!$img_info) {
+                $err_list[] = 'Uploaded file is not a valid image.';
+            } else {
+                $saved_name = time() . '_' . preg_replace('/[^a-zA-Z0-9_\.-]/', '_', basename($_FILES['image']['name']));
+                $target = __DIR__ . '/uploads/' . $saved_name;
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+                    $photo_file = 'uploads/' . $saved_name;
+                }
             }
         }
     }

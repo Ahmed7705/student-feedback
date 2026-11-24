@@ -24,10 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $err_list[] = 'Email already exists.';
         } else {
             $pw = password_hash($pass, PASSWORD_DEFAULT);
-            $ins = $db->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+            $ins = $db->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'customer')");
             $ins->execute([$name, $email, $pw]);
             $_SESSION['account_id'] = $db->lastInsertId();
             $_SESSION['account_name'] = $name;
+            $_SESSION['account_role'] = 'customer';
             $_SESSION['msg_ok'] = 'Registration complete.';
             header('Location: index.php');
             exit;

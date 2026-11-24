@@ -1,6 +1,8 @@
-# Online Bookstore (COMP-315 Project 2 - Plain PHP)
+# Online Bookstore (Plain PHP & MySQL)
 
-## Team Members / فريق العمل:
+Web programming mini-project developed using PHP, MySQL, HTML5, CSS3, and JavaScript.
+
+## Team Members:
 - **Lamar Mamdouh Busayli** (لمار ممدوح بصيلي) - `202502428`
 - **Lama Issa Madkhali** (لمى عيسى مدخلي) - `202500391`
 - **Rahaf Ahmed Jamali** (رهف احمد جمالي) - `202503165`
@@ -8,17 +10,14 @@
 - **Maryam Yahya Madkhali** (مريم يحيى مدخلي) - `202501652`
 
 ## Features:
-- Book Catalog with search, category filter, and JavaScript total price calculation
-- Add Book form with price and quantity validation and optional cover upload
-- Manage Books inventory table with stock indicators, Edit, and Delete actions
-- User session authentication: Registration, Login, and Logout
-- Test credentials: `admin@bookstore.com` / `123456`
+- **Book Catalog**: Responsive book cards with live search, category filter, and JavaScript total price calculation.
+- **Inventory Management**: View all books, stock levels, and administrative actions.
+- **Add & Edit Book Forms**: Server-side validation for title, author, category, price, and integer quantity, with optional image upload.
+- **Authentication & Roles**: Admin and customer account support with password hashing and session management.
+- **Administrator Account**: `admin@bookstore.com` / `Admin@2026`
 
-## Database Tables:
-- `users` (id, name, email, password)
-- `books` (id, title, author, category, price, quantity, image_path)
-
-## Hosting on InfinityFree / XAMPP:
-1. Import `database.sql` in phpMyAdmin.
-2. Check database connection settings in `config.php`.
-3. Upload files to `htdocs/`.
+## Database Setup:
+1. Create a MySQL database (e.g. `bookstore_db`).
+2. Import `database.sql` via phpMyAdmin.
+3. Configure connection details in `config.php`.
+4. Upload project files to web server `htdocs/`.

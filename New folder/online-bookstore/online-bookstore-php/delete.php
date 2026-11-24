@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-must_login();
+must_admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();

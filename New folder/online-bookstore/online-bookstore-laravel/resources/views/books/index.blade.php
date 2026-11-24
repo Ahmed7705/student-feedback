@@ -3,6 +3,13 @@
 @section('title', 'Catalog')
 
 @section('content')
+<div class="panel-box p-4 mb-4 text-center">
+    <h3 class="fw-bold mb-2" style="color: var(--theme-main);">Welcome to Online Bookstore</h3>
+    <p class="text-secondary mx-auto mb-0" style="max-width: 680px;">
+        Explore our curated selection of computer science, software engineering, and technology books. Browse titles, search by category, and easily calculate your total order cost below.
+    </p>
+</div>
+
 <div class="panel-box p-4 mb-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-3 border-bottom gap-3">
         <div>
@@ -56,7 +63,7 @@
                             <input type="checkbox" class="form-check-input pick-book" id="b_{{ $item->id }}" data-cost="{{ number_format((float)$item->price, 2, '.', '') }}" onchange="updatePriceSum()">
                             <label class="form-check-label text-secondary" for="b_{{ $item->id }}">Select</label>
                         </div>
-                        @auth
+                        @if(Auth::check() && Auth::user()->role === 'admin')
                             <div class="d-flex gap-1">
                                 <a href="{{ route('books.edit', $item) }}" class="btn btn-sm btn-outline-secondary py-0 px-2">Edit</a>
                                 <form action="{{ route('books.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">
@@ -65,7 +72,7 @@
                                     <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2">Delete</button>
                                 </form>
                             </div>
-                        @endauth
+                        @endif
                     </div>
                 </div>
             </div>
