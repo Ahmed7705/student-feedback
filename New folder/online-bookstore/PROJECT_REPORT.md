@@ -104,7 +104,13 @@ The application uses two relational tables:
    - **Password**: `Admin@2026`
 
 ### Online Deployment (InfinityFree):
-1. In the InfinityFree Control Panel, create a MySQL Database.
-2. Open phpMyAdmin on InfinityFree and import `database.sql`.
-3. Update `config.php` with the InfinityFree MySQL Host, Database Name, Username, and Password.
-4. Upload all files from `online-bookstore-php` into the `htdocs/` folder via FTP or the File Manager.
+- **Live Website URL**: [http://online-bookstore.infinityfree.io](http://online-bookstore.infinityfree.io)
+- **Hosting Platform**: InfinityFree Free Web Hosting
+- **MySQL Database Host**: `sql110.infinityfree.com`
+- **Database Name**: `if0_43525561_bookstore`
+- **Administrator Login Credentials**:
+  - **Email**: `admin@bookstore.com`
+  - **Password**: `Admin@2026`
+- **Customer / Student Test Account**:
+  - **Email**: `lamar@student.jazanu.edu.sa` (or any new account created via Register page)
+  - **Password**: `Password@123`

@@ -8,6 +8,7 @@ $active_file = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= clean($view_title ?? 'Catalog') ?> | Online Bookstore</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%235c3d2e'/%3E%3Crect x='5' y='7' width='22' height='18' rx='2' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='5' y1='12' x2='27' y2='12' stroke='%23ffffff' stroke-width='1.8'/%3E%3Ccircle cx='9' cy='9.5' r='1' fill='%23ffffff'/%3E%3Ccircle cx='12' cy='9.5' r='1' fill='%23ffffff'/%3E%3Ccircle cx='15' cy='9.5' r='1' fill='%23ffffff'/%3E%3C/svg%3E">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {

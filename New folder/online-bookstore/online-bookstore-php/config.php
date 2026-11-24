@@ -40,18 +40,30 @@ function must_admin() {
     }
 }
 
-// Database configuration (MySQL configured for InfinityFree or local XAMPP)
-$db_host = getenv('DB_HOST') ?: 'localhost';
-$db_name = getenv('DB_NAME') ?: 'bookstore_db';
-$db_user = getenv('DB_USER') ?: 'root';
-$db_pass = getenv('DB_PASS') ?: '';
-$db_port = (int)(getenv('DB_PORT') ?: 3306);
+// Database configuration (MySQL configured for InfinityFree or local development)
+$is_online = (strpos($_SERVER['HTTP_HOST'] ?? '', 'infinityfree') !== false || strpos($_SERVER['HTTP_HOST'] ?? '', '.rf.gd') !== false);
+
+if ($is_online) {
+    // InfinityFree MySQL credentials
+    $db_host = getenv('DB_HOST') ?: 'sql110.infinityfree.com';
+    $db_name = getenv('DB_NAME') ?: 'if0_43525561_bookstore';
+    $db_user = getenv('DB_USER') ?: 'if0_43525561';
+    $db_pass = getenv('DB_PASS') ?: 'AGgvxo1dHa8I7';
+    $db_port = (int)(getenv('DB_PORT') ?: 3306);
+} else {
+    // Local development credentials
+    $db_host = getenv('DB_HOST') ?: 'localhost';
+    $db_name = getenv('DB_NAME') ?: 'bookstore_db';
+    $db_user = getenv('DB_USER') ?: 'root';
+    $db_pass = getenv('DB_PASS') ?: '';
+    $db_port = (int)(getenv('DB_PORT') ?: 3306);
+}
 
 $db = null;
 $is_mysql = false;
 
 // Check if MySQL server is reachable
-$sock = @fsockopen($db_host, $db_port, $errno, $errstr, 0.2);
+$sock = @fsockopen($db_host, $db_port, $errno, $errstr, 0.5);
 if ($sock) {
     fclose($sock);
     try {

@@ -11,6 +11,11 @@ A web application developed for the Web Programming course (315 COMP) at Jazan U
 | 4 | Rinas Ibrahim Bahri | ريناس ابراهيم بحري | 202500787 |
 | 5 | Maryam Yahya Madkhali | مريم يحيى مدخلي | 202501652 |
 
+## Live Deployment:
+- **URL**: [http://online-bookstore.infinityfree.io](http://online-bookstore.infinityfree.io)
+- **Hosting**: InfinityFree (`sql110.infinityfree.com`)
+- **Admin**: `admin@bookstore.com` / `Admin@2026`
+
 ## Project Structure:
 - `online-bookstore-php/`: Core project developed in Plain PHP with MySQL PDO (runs on port `8085`).
 - `online-bookstore-laravel/`: Laravel version developed with MVC architecture (runs on port `8084`).
