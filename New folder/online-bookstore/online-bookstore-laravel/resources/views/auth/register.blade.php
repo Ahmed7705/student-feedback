@@ -6,10 +6,10 @@
 <div class="row justify-content-center mt-3">
     <div class="col-md-5">
         <div class="panel-box p-4">
-            <h5 class="fw-bold mb-3" style="color: var(--theme-teal);">Register Account</h5>
+            <h5 class="fw-bold mb-3" style="color: var(--theme-main);">Register Account</h5>
 
             @if ($errors->any())
-                <div class="alert alert-danger py-2 small">
+                <div class="alert alert-danger py-2 small text-center">
                     <ul class="mb-0 ps-3">
                         @foreach ($errors->all() as $msg)
                             <li>{{ $msg }}</li>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center pt-2">
-                    <a href="{{ route('login') }}" class="small text-decoration-none" style="color: var(--theme-teal);">Sign In</a>
+                    <a href="{{ route('login') }}" class="small text-decoration-none" style="color: var(--theme-main);">Sign In</a>
                     <button type="submit" class="btn btn-store btn-sm px-4">Register</button>
                 </div>
             </form>

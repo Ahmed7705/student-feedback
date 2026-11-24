@@ -42,10 +42,10 @@ require_once __DIR__ . '/header.php';
 <div class="row justify-content-center mt-3">
     <div class="col-md-5">
         <div class="panel-box p-4">
-            <h5 class="fw-bold mb-3" style="color: var(--theme-teal);">Register Account</h5>
+            <h5 class="fw-bold mb-3" style="color: var(--theme-main);">Register Account</h5>
 
             <?php if (!empty($err_list)): ?>
-                <div class="alert alert-danger py-2 small">
+                <div class="alert alert-danger py-2 small text-center">
                     <ul class="mb-0 ps-3">
                         <?php foreach ($err_list as $msg): ?>
                             <li><?= clean($msg) ?></li>
@@ -73,7 +73,7 @@ require_once __DIR__ . '/header.php';
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center pt-2">
-                    <a href="login.php" class="small text-decoration-none" style="color: var(--theme-teal);">Sign In</a>
+                    <a href="login.php" class="small text-decoration-none" style="color: var(--theme-main);">Sign In</a>
                     <button type="submit" class="btn btn-store btn-sm px-4">Register</button>
                 </div>
             </form>

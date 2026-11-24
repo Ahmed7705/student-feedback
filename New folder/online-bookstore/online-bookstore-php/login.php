@@ -36,10 +36,10 @@ require_once __DIR__ . '/header.php';
 <div class="row justify-content-center mt-3">
     <div class="col-md-5">
         <div class="panel-box p-4">
-            <h5 class="fw-bold mb-3" style="color: var(--theme-teal);">Sign In</h5>
+            <h5 class="fw-bold mb-3" style="color: var(--theme-main);">Sign In</h5>
 
             <?php if ($err_msg): ?>
-                <div class="alert alert-danger py-2 small"><?= clean($err_msg) ?></div>
+                <div class="alert alert-danger py-2 small text-center"><?= clean($err_msg) ?></div>
             <?php endif; ?>
 
             <form action="login.php" method="POST">
@@ -56,7 +56,7 @@ require_once __DIR__ . '/header.php';
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center pt-2">
-                    <a href="register.php" class="small text-decoration-none" style="color: var(--theme-teal);">New account</a>
+                    <a href="register.php" class="small text-decoration-none" style="color: var(--theme-main);">New account</a>
                     <button type="submit" class="btn btn-store btn-sm px-4">Sign In</button>
                 </div>
             </form>

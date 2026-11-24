@@ -6,10 +6,10 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
         <div class="panel-box p-4">
-            <h5 class="fw-bold mb-3" style="color: var(--theme-teal);">Add Book to Catalog</h5>
+            <h5 class="fw-bold mb-3" style="color: var(--theme-main);">Add Book to Catalog</h5>
 
             @if ($errors->any())
-                <div class="alert alert-danger py-2 small">
+                <div class="alert alert-danger py-2 small text-center">
                     <ul class="mb-0 ps-3">
                         @foreach ($errors->all() as $msg)
                             <li>{{ $msg }}</li>

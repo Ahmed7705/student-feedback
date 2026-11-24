@@ -7,7 +7,7 @@ $list = $db->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
 
 <div class="panel-box p-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0" style="color: var(--theme-teal);">Book Inventory</h5>
+        <h5 class="fw-bold mb-0" style="color: var(--theme-main);">Book Inventory</h5>
         <a href="create.php" class="btn btn-store btn-sm px-3">+ New Book</a>
     </div>
 
@@ -41,7 +41,7 @@ $list = $db->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
                                         <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2">Delete</button>
                                     </form>
                                 <?php else: ?>
-                                    <a href="login.php" class="small text-decoration-none" style="color: var(--theme-teal);">Sign in to edit</a>
+                                    <a href="login.php" class="small text-decoration-none" style="color: var(--theme-main);">Sign in to edit</a>
                                 <?php endif; ?>
                             </td>
                         </tr>

@@ -29,7 +29,7 @@ $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks'];
 <div class="panel-box p-3 mb-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-2 mb-3 border-bottom gap-2">
         <div>
-            <h5 class="fw-bold mb-0" style="color: var(--theme-teal);">Available Books</h5>
+            <h5 class="fw-bold mb-0" style="color: var(--theme-main);">Available Books</h5>
             <span class="text-muted small">Check books below to compute the total cost.</span>
         </div>
         <div class="small fw-bold">

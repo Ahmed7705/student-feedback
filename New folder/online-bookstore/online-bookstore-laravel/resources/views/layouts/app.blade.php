@@ -7,11 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --theme-teal: #1f6f5c;
-            --theme-dark: #165244;
-            --theme-bg: #f3f7f5;
-            --theme-ink: #1c2b27;
-            --theme-line: #cfe0da;
+            --theme-main: #5c3d2e;
+            --theme-dark: #432b20;
+            --theme-bg: #f8f5f1;
+            --theme-ink: #2b211c;
+            --theme-line: #e2d6c8;
         }
         body {
             background-color: var(--theme-bg);
@@ -19,7 +19,7 @@
             color: var(--theme-ink);
         }
         .top-bar {
-            background-color: var(--theme-teal);
+            background-color: var(--theme-main);
             padding: 0.65rem 0;
         }
         .store-brand {
@@ -30,7 +30,7 @@
             letter-spacing: 0.2px;
         }
         .store-brand:hover {
-            color: #dff2ec;
+            color: #f3e9df;
         }
         .top-bar .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
@@ -48,9 +48,9 @@
             font-weight: 600;
         }
         .btn-store {
-            background-color: var(--theme-teal);
+            background-color: var(--theme-main);
             color: #ffffff;
-            border: 1px solid var(--theme-teal);
+            border: 1px solid var(--theme-main);
             font-weight: 500;
             border-radius: 4px;
         }
@@ -69,7 +69,7 @@
             border: 1px solid var(--theme-line);
             border-radius: 6px;
             background-color: #ffffff;
-            border-top: 3px solid var(--theme-teal);
+            border-top: 3px solid var(--theme-main);
         }
         .form-control,
         .form-select {
@@ -83,24 +83,29 @@
         .btn:active {
             box-shadow: none !important;
             outline: none !important;
-            border-color: var(--theme-teal) !important;
+            border-color: var(--theme-main) !important;
         }
         .form-check-input:checked {
-            background-color: var(--theme-teal);
-            border-color: var(--theme-teal);
+            background-color: var(--theme-main);
+            border-color: var(--theme-main);
         }
         .cost-label {
-            color: var(--theme-teal);
+            color: var(--theme-main);
             font-weight: 700;
             font-size: 0.96rem;
         }
         .table th {
-            color: var(--theme-teal);
+            color: var(--theme-main);
             font-weight: 600;
             border-bottom-width: 1px;
         }
+        .notice-center {
+            max-width: 520px;
+            margin: 0 auto 1rem auto;
+            text-align: center;
+        }
         .bottom-footer {
-            background-color: var(--theme-teal);
+            background-color: var(--theme-main);
             color: rgba(255, 255, 255, 0.92);
             padding: 0.7rem 0;
             font-size: 0.82rem;
@@ -145,7 +150,7 @@
 
     <main class="container py-4 flex-grow-1">
         @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show py-2 small" role="alert">
+            <div class="alert alert-success alert-dismissible fade show py-2 small notice-center" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>

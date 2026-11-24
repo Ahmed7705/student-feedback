@@ -60,10 +60,10 @@ require_once __DIR__ . '/header.php';
 <div class="row justify-content-center">
     <div class="col-md-7">
         <div class="panel-box p-4">
-            <h5 class="fw-bold mb-3" style="color: var(--theme-teal);">Update Book</h5>
+            <h5 class="fw-bold mb-3" style="color: var(--theme-main);">Update Book</h5>
 
             <?php if (!empty($err_list)): ?>
-                <div class="alert alert-danger py-2 small">
+                <div class="alert alert-danger py-2 small text-center">
                     <ul class="mb-0 ps-3">
                         <?php foreach ($err_list as $msg): ?>
                             <li><?= clean($msg) ?></li>

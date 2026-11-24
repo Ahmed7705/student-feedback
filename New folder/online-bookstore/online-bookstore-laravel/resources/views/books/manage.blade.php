@@ -5,7 +5,7 @@
 @section('content')
 <div class="panel-box p-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0" style="color: var(--theme-teal);">Book Inventory</h5>
+        <h5 class="fw-bold mb-0" style="color: var(--theme-main);">Book Inventory</h5>
         <a href="{{ route('books.create') }}" class="btn btn-store btn-sm px-3">+ New Book</a>
     </div>
 
@@ -38,7 +38,7 @@
                                     <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2">Delete</button>
                                 </form>
                             @else
-                                <a href="{{ route('login') }}" class="small text-decoration-none" style="color: var(--theme-teal);">Sign in to edit</a>
+                                <a href="{{ route('login') }}" class="small text-decoration-none" style="color: var(--theme-main);">Sign in to edit</a>
                             @endauth
                         </td>
                     </tr>
