@@ -1,16 +1,24 @@
-# Online Bookstore (COMP-315 Project 2)
+# Online Bookstore (COMP-315 Project 2 - Plain PHP)
 
-Features:
-- Book Catalog with search, category filter, and JavaScript total price calculator
-- Add Book form with Reset button, price/quantity validation, and optional cover upload
-- Manage Books table with quantity display, Edit, and Delete with confirmation
-- Session login, registration, and logout (Test account: admin@bookstore.com / 123456)
+## Team Members / فريق العمل:
+- **Lamar Mamdouh Busayli** (لمار ممدوح بصيلي) - `202502428`
+- **Lama Issa Madkhali** (لمى عيسى مدخلي) - `202500391`
+- **Rahaf Ahmed Jamali** (رهف احمد جمالي) - `202503165`
+- **Rinas Ibrahim Bahri** (ريناس ابراهيم بحري) - `202500787`
+- **Maryam Yahya Madkhali** (مريم يحيى مدخلي) - `202501652`
 
-Database Tables:
-- users (id, name, email, password)
-- books (id, title, author, category, price, quantity, image_path)
+## Features:
+- Book Catalog with search, category filter, and JavaScript total price calculation
+- Add Book form with price and quantity validation and optional cover upload
+- Manage Books inventory table with stock indicators, Edit, and Delete actions
+- User session authentication: Registration, Login, and Logout
+- Test credentials: `admin@bookstore.com` / `123456`
 
-Hosting on InfinityFree / XAMPP:
-1. Import database.sql in phpMyAdmin.
-2. Check database details in config.php.
-3. Upload files to htdocs/.
+## Database Tables:
+- `users` (id, name, email, password)
+- `books` (id, title, author, category, price, quantity, image_path)
+
+## Hosting on InfinityFree / XAMPP:
+1. Import `database.sql` in phpMyAdmin.
+2. Check database connection settings in `config.php`.
+3. Upload files to `htdocs/`.
