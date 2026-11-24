@@ -5,7 +5,7 @@ $isLocal = in_array($_SERVER['HTTP_HOST'] ?? 'localhost', ['localhost', '127.0.0
 
 define('DB_HOST', $isLocal ? 'localhost' : 'sql207.infinityfree.com');
 define('DB_USER', $isLocal ? 'root' : 'if0_43505732');
-define('DB_PASS', $isLocal ? '' : 'sssadmin1');
+define('DB_PASS', $isLocal ? '' : (getenv('DB_PASS') ?: 'YOUR_VPANEL_PASSWORD'));
 define('DB_NAME', $isLocal ? 'appointment_system' : 'if0_43505732_advisingappointments');
 define('SQLITE_PATH', __DIR__ . '/storage/database.sqlite');
 

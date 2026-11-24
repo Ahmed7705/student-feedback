@@ -2,24 +2,7 @@
 
 هذا الملف يحتوي على جميع بيانات الاستضافة وقاعدة البيانات والطرق الكاملة لرفع أو تحديث المشروع في أي وقت.
 
----
 
-## 1. بيانات حساب الاستضافة وقاعدة البيانات (InfinityFree)
-
-- **رابط الموقع المباشر:** [http://students-feedback.infinityfreeapp.com](http://students-feedback.infinityfreeapp.com)
-- **المجلد المخصص للموقع على السيرفر:** `/students-feedback.infinityfreeapp.com/htdocs`
-- **بيانات اتصال FTP:**
-  - **FTP Host (السيرفر):** `ftpupload.net`
-  - **FTP Port (المنفذ):** `21`
-  - **FTP Username (اسم المستخدم):** `if0_43505732`
-  - **FTP Password (كلمة المرور):** `sssadmin1`
-- **بيانات قاعدة البيانات MySQL (مربوطة وجاهزة في `config.php`):**
-  - **MySQL Host:** `sql207.infinityfree.com`
-  - **Database Name:** `if0_43505732_studentsfeedback`
-  - **MySQL Username:** `if0_43505732`
-  - **MySQL Password:** `sssadmin1`
-
----
 
 ## 2. كيف يعمل الاتصال بقاعدة البيانات تلقائياً؟
 
