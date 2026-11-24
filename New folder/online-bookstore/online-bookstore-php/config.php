@@ -85,6 +85,8 @@ if ($db->query("SELECT COUNT(*) FROM books")->fetchColumn() == 0) {
         ['SQL & Relational Databases', 'Chris Date', 'Database', 62.00, 9],
         ['Web Application Architecture', 'Leon Shklar', 'Software Engineering', 54.00, 11],
         ['Network Security Essentials', 'William Stallings', 'Networks', 58.00, 7],
+        ['Data Structures & Algorithms', 'Robert Sedgewick', 'Algorithms', 65.00, 12],
+        ['Cloud Computing Principles', 'Thomas Erl', 'Cloud Computing', 52.00, 8],
     ];
     $insBook = $db->prepare("INSERT INTO books (title, author, category, price, quantity) VALUES (?, ?, ?, ?, ?)");
     foreach ($initialBooks as $row) {
@@ -105,6 +107,12 @@ function book_photo($item) {
     }
     if (strpos($c, 'network') !== false) {
         return 'images/cover-net.jpg';
+    }
+    if (strpos($c, 'algo') !== false) {
+        return 'images/cover-algo.jpg';
+    }
+    if (strpos($c, 'cloud') !== false) {
+        return 'images/cover-cloud.jpg';
     }
     return 'images/cover-prog.jpg';
 }

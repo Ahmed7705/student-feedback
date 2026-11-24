@@ -3,23 +3,24 @@
 @section('title', 'Catalog')
 
 @section('content')
-<div class="panel-box p-3 mb-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-2 mb-3 border-bottom gap-2">
+<div class="panel-box p-4 mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-3 border-bottom gap-3">
         <div>
-            <h5 class="fw-bold mb-0" style="color: var(--theme-main);">Available Books</h5>
+            <h4 class="fw-bold mb-1" style="color: var(--theme-main);">Available Books</h4>
             <span class="text-muted small">Check books below to compute the total cost.</span>
         </div>
-        <div class="small fw-bold">
-            Total Price: <span id="totalBox" class="cost-label">0.00 SAR</span>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-2" style="background: rgba(92, 61, 46, 0.08); border: 1px solid var(--theme-line);">
+            <span class="small fw-semibold text-secondary">Total Price:</span>
+            <span id="totalBox" class="cost-label fw-bold">0.00 SAR</span>
         </div>
     </div>
 
     <form method="GET" action="{{ route('home') }}" class="row g-2 align-items-center">
         <div class="col-md-5">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Find by title or author..." value="{{ request('search') }}">
+            <input type="text" name="search" class="form-control" placeholder="Find by title or author..." value="{{ request('search') }}">
         </div>
         <div class="col-md-5">
-            <select name="category" class="form-select form-select-sm">
+            <select name="category" class="form-select">
                 <option value="">All Categories</option>
                 @foreach($cat_list as $c)
                     <option value="{{ $c }}" {{ request('category') === $c ? 'selected' : '' }}>{{ $c }}</option>
@@ -27,8 +28,8 @@
             </select>
         </div>
         <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-store btn-sm flex-grow-1">Search</button>
-            <a href="{{ route('home') }}" class="btn btn-outline-secondary btn-sm">Clear</a>
+            <button type="submit" class="btn btn-store flex-grow-1">Search</button>
+            <a href="{{ route('home') }}" class="btn btn-outline-secondary">Clear</a>
         </div>
     </form>
 </div>

@@ -12,7 +12,7 @@ if (!$record) {
     exit;
 }
 
-$cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks'];
+$cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks', 'Algorithms', 'Cloud Computing'];
 $err_list = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

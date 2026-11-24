@@ -21,5 +21,7 @@ class BookSeeder extends Seeder
         Book::create(['title' => 'SQL & Relational Databases', 'author' => 'Chris Date', 'category' => 'Database', 'price' => 62.00, 'quantity' => 9]);
         Book::create(['title' => 'Web Application Architecture', 'author' => 'Leon Shklar', 'category' => 'Software Engineering', 'price' => 54.00, 'quantity' => 11]);
         Book::create(['title' => 'Network Security Essentials', 'author' => 'William Stallings', 'category' => 'Networks', 'price' => 58.00, 'quantity' => 7]);
+        Book::create(['title' => 'Data Structures & Algorithms', 'author' => 'Robert Sedgewick', 'category' => 'Algorithms', 'price' => 65.00, 'quantity' => 12]);
+        Book::create(['title' => 'Cloud Computing Principles', 'author' => 'Thomas Erl', 'category' => 'Cloud Computing', 'price' => 52.00, 'quantity' => 8]);
     }
 }

@@ -19,4 +19,6 @@ INSERT INTO books (title, author, category, price, quantity) VALUES
 ('Modern PHP Programming', 'Josh Lockhart', 'Programming', 48.00, 14),
 ('SQL & Relational Databases', 'Chris Date', 'Database', 62.00, 9),
 ('Web Application Architecture', 'Leon Shklar', 'Software Engineering', 54.00, 11),
-('Network Security Essentials', 'William Stallings', 'Networks', 58.00, 7);
+('Network Security Essentials', 'William Stallings', 'Networks', 58.00, 7),
+('Data Structures & Algorithms', 'Robert Sedgewick', 'Algorithms', 65.00, 12),
+('Cloud Computing Principles', 'Thomas Erl', 'Cloud Computing', 52.00, 8);

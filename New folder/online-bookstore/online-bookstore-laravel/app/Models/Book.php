@@ -35,6 +35,12 @@ class Book extends Model
         if (str_contains($c, 'network')) {
             return asset('images/cover-net.jpg');
         }
+        if (str_contains($c, 'algo')) {
+            return asset('images/cover-algo.jpg');
+        }
+        if (str_contains($c, 'cloud')) {
+            return asset('images/cover-cloud.jpg');
+        }
         return asset('images/cover-prog.jpg');
     }
 }

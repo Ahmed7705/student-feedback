@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    private array $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks'];
+    private array $cat_list = ['Programming', 'Database', 'Software Engineering', 'Networks', 'Algorithms', 'Cloud Computing'];
 
     public function index(Request $request)
     {
