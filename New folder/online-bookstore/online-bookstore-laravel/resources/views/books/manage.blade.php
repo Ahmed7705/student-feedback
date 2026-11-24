@@ -4,47 +4,62 @@
 
 @section('content')
 <div class="panel-box p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0" style="color: var(--theme-main);">Book Inventory</h5>
-        <a href="{{ route('books.create') }}" class="btn btn-store btn-sm px-3">+ New Book</a>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-4 border-bottom gap-3">
+        <div>
+            <h4 class="fw-bold mb-1" style="color: var(--theme-main);">Book Inventory</h4>
+            <div class="text-secondary small">Overview of all catalog titles, stock levels, and store pricing</div>
+        </div>
+        <div>
+            <a href="{{ route('books.create') }}" class="btn btn-store px-3 py-2">+ New Book</a>
+        </div>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-sm align-middle mb-0">
-            <thead>
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background: rgba(92, 61, 46, 0.05); border-bottom: 2px solid var(--theme-line);">
                 <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th class="text-end">Actions</th>
+                    <th class="py-3 px-3">Title</th>
+                    <th class="py-3 px-3">Author</th>
+                    <th class="py-3 px-3">Category</th>
+                    <th class="py-3 px-3">Price</th>
+                    <th class="py-3 px-3">Quantity</th>
+                    <th class="py-3 px-3 text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($list as $item)
                     <tr>
-                        <td class="fw-semibold">{{ $item->title }}</td>
-                        <td class="text-secondary small">{{ $item->author }}</td>
-                        <td class="text-secondary small">{{ $item->category }}</td>
-                        <td class="cost-label">{{ number_format((float)$item->price, 2) }} SAR</td>
-                        <td class="small">{{ $item->quantity }}</td>
-                        <td class="text-end">
+                        <td class="py-3 px-3">
+                            <div class="fw-bold" style="color: var(--theme-ink);">{{ $item->title }}</div>
+                        </td>
+                        <td class="py-3 px-3 text-secondary small">{{ $item->author }}</td>
+                        <td class="py-3 px-3">
+                            <span class="badge" style="background: rgba(92, 61, 46, 0.08); color: var(--theme-main); font-weight: 500; font-size: 0.8rem; border: 1px solid var(--theme-line);">{{ $item->category }}</span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="cost-label fw-bold">{{ number_format((float)$item->price, 2) }} SAR</span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="fw-semibold">{{ $item->quantity }}</span> <span class="text-secondary small">in stock</span>
+                        </td>
+                        <td class="py-3 px-3 text-end">
                             @auth
-                                <a href="{{ route('books.edit', $item) }}" class="btn btn-sm btn-outline-secondary py-0 px-2">Edit</a>
-                                <form action="{{ route('books.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2">Delete</button>
-                                </form>
+                                <div class="d-flex justify-content-end gap-1">
+                                    <a href="{{ route('books.edit', $item) }}" class="btn btn-sm btn-outline-secondary px-3">Edit</a>
+                                    <form action="{{ route('books.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this book?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger px-3">Delete</button>
+                                    </form>
+                                </div>
                             @else
-                                <a href="{{ route('login') }}" class="small text-decoration-none" style="color: var(--theme-main);">Sign in to edit</a>
+                                <a href="{{ route('login') }}" class="small text-decoration-none fw-semibold" style="color: var(--theme-main);">Sign in to edit</a>
                             @endauth
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center text-muted py-4">No books in inventory.</td>
+                        <td colspan="6" class="text-center text-muted py-5">No books in inventory.</td>
                     </tr>
                 @endforelse
             </tbody>
